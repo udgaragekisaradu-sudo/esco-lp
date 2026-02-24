@@ -1,13 +1,406 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>ESCO LP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>設備投資・省エネ診断｜株式会社エスココーポレーション</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #001F3F;
+            --emerald: #50C878;
+            --orange: #FF8C00;
+            --white: #FFFFFF;
+            --light-gray: #F8F9FA;
+            --text-main: #333333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans JP', sans-serif; }
+        body { background-color: var(--white); color: var(--text-main); line-height: 1.8; overflow-x: hidden; }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .section-padding { padding: 100px 0; }
+        .center { text-align: center; }
+        
+        .navy-container { background-color: var(--navy); color: var(--white); padding: 60px 40px; border-radius: 0; position: relative; }
+
+        .btn-cta { background-color: var(--orange); color: var(--white); padding: 20px 50px; border-radius: 50px; text-decoration: none; font-weight: 900; display: inline-block; font-size: 1.2rem; border: none; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,140,0,0.4); }
+        .btn-cta:hover { transform: scale(1.05); background-color: #e67e00; }
+
+        /* ヘッダー用お問い合わせボタン（小さめ） */
+        .btn-header { background-color: var(--orange); color: var(--white); padding: 8px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 0.9rem; transition: 0.3s; }
+        .btn-header:hover { background-color: #e67e00; }
+
+        .label-point { background: var(--orange); color: white; padding: 2px 12px; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px; display: inline-block; }
+        .label-emerald { background: var(--emerald); color: white; padding: 2px 12px; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px; display: inline-block; }
+
+        header { background: white; padding: 15px 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 20px; font-weight: 900; display: flex; align-items: center; color: var(--navy); }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+
+        /* 1. FV (スクショのデザインを反映) */
+        .hero { 
+            height: 100vh; 
+            background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), 
+                        url('top01.png') no-repeat center center/cover; 
+            display: flex; align-items: center; 
+        }
+        .hero-box { 
+            background: rgba(255,255,255,0.95); 
+            padding: 40px; 
+            max-width: 650px; 
+            border-radius: 10px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .hero-tag { background: var(--navy); color: white; display: inline-block; padding: 5px 15px; font-weight: bold; font-size: 0.9rem; margin-bottom: 20px; }
+        .hero-sub { color: var(--orange); font-weight: 900; font-size: 1.4rem; margin-bottom: 10px; }
+        .hero-main { color: var(--navy); font-size: 3.5rem; font-weight: 900; line-height: 1.2; margin-bottom: 20px; }
+        .hero-desc { border-left: 5px solid var(--orange); padding-left: 15px; margin-bottom: 30px; font-weight: bold; font-size: 1.1rem; color: #444; }
+        
+        .hero-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px; }
+        .h-feat-item { border: 2px solid var(--navy); border-radius: 8px; padding: 10px; text-align: center; background: white; }
+        .h-feat-top { color: var(--orange); font-weight: bold; font-size: 0.85rem; display: block; }
+        .h-feat-bottom { color: var(--navy); font-weight: bold; font-size: 0.95rem; display: block; }
+
+        /* 5. 比較表 */
+        .comparison-table { width: 100%; border-collapse: collapse; margin-top: 30px; background: white; border: 1px solid var(--navy); }
+        .comparison-table th, .comparison-table td { padding: 25px; border: 1px solid #ddd; text-align: center; }
+        .comparison-table th { background: var(--navy); color: white; }
+        .comparison-table th.highlight { background: var(--emerald); }
+        .comparison-table td.highlight { background: #f0fdf4; border-left: 2px solid var(--emerald); border-right: 2px solid var(--emerald); font-weight: bold; }
+        .emphasis { color: var(--orange); font-weight: 900; }
+
+        /* 6. 4カラムサービス */
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 40px; }
+        .card { border: 1px solid #eee; background: var(--navy); color: white; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .card-img { height: 180px; background-color: #ddd; background-size: cover; background-position: center; }
+        .card-body { padding: 25px; }
+        .card-body h3 { font-size: 1.1rem; margin-bottom: 10px; }
+
+        /* 8. 事例（横棒グラフ） */
+        .impact-card { border-left: 10px solid var(--orange); background: var(--navy); color: white; padding: 60px 40px; margin-top: 40px; }
+        .graph-flex { display: flex; flex-direction: column; gap: 30px; margin-bottom: 50px; }
+        .bar-container { display: flex; align-items: center; width: 100%; }
+        .bar-label { width: 80px; font-weight: bold; flex-shrink: 0; text-align: left; }
+        .bar-box { flex-grow: 1; height: 45px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); position: relative; }
+        .bar-inner { height: 100%; transition: width 2s ease; }
+        .bar-before { width: 100%; background: #FFFFFF; }
+        .bar-after { width: 55%; background: var(--orange); box-shadow: 0 0 15px rgba(255,140,0,0.5); }
+        .bar-value { width: 140px; padding-left: 20px; font-weight: 900; font-size: 1.3rem; flex-shrink: 0; text-align: right; }
+
+        .impact-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 40px; text-align: center; }
+        .stat-item span { font-size: 0.9rem; color: #ccc; }
+        .stat-item b { font-size: 2.5rem; color: var(--orange); display: block; }
+
+        .reason-num { font-size: 4rem; font-weight: 900; color: var(--emerald); line-height: 1; opacity: 0.5; }
+        .form-area { background: #f0fbf4; padding: 60px; border: 10px solid var(--navy); }
+        input, select, textarea { width: 100%; padding: 15px; margin-bottom: 20px; border: 1px solid #ccc; font-size: 1rem; }
+
+        @media (max-width: 768px) {
+            .hero-main { font-size: 2.2rem; }
+            .hero-features { grid-template-columns: 1fr; }
+            .section-padding { padding: 60px 0; }
+            .bar-value { font-size: 1.1rem; width: 100px; }
+            .header-right { gap: 10px; }
+            .logo { font-size: 16px; }
+        }
+    </style>
 </head>
 <body>
 
-  <h1>ESCO LP（自分用）</h1>
-  <p>ここから作っていく</p>
-<img src="top01.png">
+    <header>
+        <div class="container header-inner">
+            <div class="logo">
+                <div style="width:30px; height:30px; background:linear-gradient(#000080, #87CEEB); border-radius:50%; margin-right:10px;"></div>
+                ESCO Co.,Ltd
+            </div>
+            <div class="header-right">
+                <div style="font-weight:bold;">TEL: 086-239-8172</div>
+                <a href="#contact" class="btn-header">お問い合わせ</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1. FV -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-box">
+                <div class="hero-tag">法人様・土地所有者様・投資家様向け</div>
+                <div class="hero-sub">系統用蓄電池投資の新たなスタンダード</div>
+                <h1 class="hero-main">脱炭素を、<br>確かな収益に。</h1>
+                <div class="hero-desc">
+                    土地選定・設計・施工・保守までワンストップサポート。<br>
+                    低圧連系による「スピード導入」と「安定運用」を実現。
+                </div>
+                <div class="hero-features">
+                    <div class="h-feat-item">
+                        <span class="h-feat-top">業界最短クラス</span>
+                        <span class="h-feat-bottom">スピーディな連系</span>
+                    </div>
+                    <div class="h-feat-item">
+                        <span class="h-feat-top">20年先まで</span>
+                        <span class="h-feat-bottom">安心の保守体制</span>
+                    </div>
+                    <div class="h-feat-item">
+                        <span class="h-feat-top">高利回り追求</span>
+                        <span class="h-feat-bottom">精緻な収益予測</span>
+                    </div>
+                </div>
+                <a href="#contact" class="btn-cta" style="width: 100%; text-align: center; border-radius: 50px;">今すぐ無料シミュレーションを依頼する</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. 危機感 -->
+    <section class="section-padding">
+        <div class="container center">
+            <span class="label-point">! 放置リスク</span>
+            <h2 style="font-size:2.5rem; color:var(--navy); margin-bottom:30px;">「まだ大丈夫」と先送りにするほど、<br>経営利益は削られ続けます。</h2>
+            <div style="max-width:800px; margin: 0 auto;">
+                <p>高騰し続ける電気料金。これは一時的な現象ではなく、構造的なリスクです。対策を打たないことは、営業利益を外部要因に委ね続けることに他なりません。</p>
+                <div style="width:100%; height:350px; background:#f4f4f4; margin-top:40px; display:flex; align-items:center; justify-content:center; color:#999; border:1px dashed #ccc;">
+                    [ 電気料金高騰グラフ ]
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 投資のパラダイムシフト -->
+    <section class="section-padding" style="background:var(--light-gray);">
+        <div class="container">
+            <div class="navy-container">
+                <h2 style="font-size:2rem; margin-bottom:20px;">「省エネ」は我慢ではなく、<br>利回りの高い「投資」です。</h2>
+                <p>銀行に預ける、あるいは設備を使い潰す。それよりも「自社で電気を創り、貯める」方が、長期的な利回りは圧倒的に高くなります。払い捨てていた経費を、純利益へ変える。これが私たちが提案する「投資」の形です。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 低圧系統用蓄電池 -->
+    <section class="section-padding">
+        <div class="container">
+            <span class="label-emerald">STRATEGY</span>
+            <h2 style="font-size:2.5rem; color:var(--navy); margin-bottom:40px;">なぜ今、「低圧系統用」蓄電池なのか。</h2>
+            <div class="grid-3" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:30px;">
+                <div style="border-top:5px solid var(--emerald); padding:25px; background:var(--light-gray);">
+                    <h3 style="color:var(--navy); margin-bottom:15px;">① 投資障壁の低さ</h3>
+                    <p>大規模な高圧系統用に比べ土地や設備の制約が少なく、事業者が導入しやすいスケールです。</p>
+                </div>
+                <div style="border-top:5px solid var(--emerald); padding:25px; background:var(--light-gray);">
+                    <h3 style="color:var(--navy); margin-bottom:15px;">② 市場連動の収益性</h3>
+                    <p>安い電力を貯め、高い時間帯に供給。単なる節電を超えた新しい収益の柱となります。</p>
+                </div>
+                <div style="border-top:5px solid var(--emerald); padding:25px; background:var(--light-gray);">
+                    <h3 style="color:var(--navy); margin-bottom:15px;">③ 将来的な資産価値</h3>
+                    <p>再エネ普及に不可欠なインフラとして、脱炭素社会の重要資産となります。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 比較表 -->
+    <section class="section-padding" style="background:#fff;">
+        <div class="container">
+            <h2 class="center" style="margin-bottom:40px; color:var(--navy);">契約種別による投資戦略の違い</h2>
+            <table class="comparison-table">
+                <tr>
+                    <th style="width: 25%;">項目</th>
+                    <th class="highlight">低圧（店舗・小規模オフィス等）</th>
+                    <th>高圧（工場・倉庫・施設等）</th>
+                </tr>
+                <tr>
+                    <td>投資の焦点</td>
+                    <td class="highlight"><span class="emphasis">蓄電池による「ピークカット」</span></td>
+                    <td>太陽光による「自給自足」</td>
+                </tr>
+                <tr>
+                    <td>推奨設備</td>
+                    <td class="highlight"><span class="emphasis">低圧系統用蓄電池＋太陽光</span></td>
+                    <td>太陽光発電＋省エネ設備</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- 6. ラインナップ -->
+    <section class="section-padding" style="background:var(--light-gray);">
+        <div class="container">
+            <h2 class="center">収益体質を作る、4つの投資対象</h2>
+            <div class="grid-4">
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://res.cloudinary.com/dn6m83n6p/image/upload/v1/grid_battery_thumb.jpg');"></div>
+                    <div class="card-body">
+                        <span class="label-emerald">最優先推奨</span>
+                        <h3>系統用蓄電池</h3>
+                        <p>ピークカットと市場運用による、新しい収益の柱。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1509391366360-fe5bb584850a?auto=format&fit=crop&q=80&w=800');"></div>
+                    <div class="card-body">
+                        <h3>産業用太陽光</h3>
+                        <p>屋根を活用し、外部からの購入電力を極限まで削減。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&q=80&w=800');"></div>
+                    <div class="card-body">
+                        <h3>省エネ設備更新</h3>
+                        <p>老朽化した空調・LEDを刷新。即座に固定費を削減。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800');"></div>
+                    <div class="card-body">
+                        <h3>電気通信インフラ</h3>
+                        <p>DX・省エネの基盤となるインフラを再構築。無駄を徹底排除。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. 選ばれる理由 -->
+    <section class="section-padding">
+        <div class="container">
+            <h2 class="center" style="margin-bottom:60px;">“設備投資”の成否は、パートナー選びで決まる。</h2>
+            <div class="grid-3" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:40px;">
+                <div>
+                    <div class="reason-num">01</div>
+                    <h3 style="margin-top:-20px; color:var(--navy);">緻密な投資算定</h3>
+                    <p>「いくらで、何年で回収し、いくら利益が出るか」。経営判断に資する高精度シミュレーションを提供します。</p>
+                </div>
+                <div>
+                    <div class="reason-num">02</div>
+                    <h3 style="margin-top:-20px; color:var(--navy);">自社一貫体制</h3>
+                    <p>設計・施工・複雑な申請・保守までワンストップ。全ての工程に責任を持ち対応します。</p>
+                </div>
+                <div>
+                    <div class="reason-num">03</div>
+                    <h3 style="margin-top:-20px; color:var(--navy);">インフラのプロ</h3>
+                    <p>電気・通信に精通したスペシャリストとして、現場状況に合わせた最適な施工を行います。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. 実績（横棒グラフ） -->
+    <section class="section-padding center" style="background:var(--light-gray);">
+        <div class="container">
+            <h2 style="color:var(--navy); margin-bottom:40px;">導入後のインパクト（事例）</h2>
+            <div class="impact-card">
+                <h3 style="margin-bottom:40px; font-weight:bold; text-align:left;">製造業 A社様（低圧系統用蓄電池＋太陽光導入）</h3>
+                
+                <div class="graph-flex">
+                    <div class="bar-container">
+                        <div class="bar-label">導入前</div>
+                        <div class="bar-box">
+                            <div class="bar-inner bar-before"></div>
+                        </div>
+                        <div class="bar-value">1,200万円</div>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-label" style="color:var(--orange);">導入後</div>
+                        <div class="bar-box">
+                            <div class="bar-inner bar-after"></div>
+                        </div>
+                        <div class="bar-value" style="color:var(--orange);">660万円</div>
+                    </div>
+                </div>
+
+                <div class="impact-stats">
+                    <div class="stat-item">
+                        <span>年間電気代削減額</span>
+                        <b>540万円</b>
+                    </div>
+                    <div class="stat-item">
+                        <span>投資回収年数</span>
+                        <b>5.2年</b>
+                    </div>
+                    <div class="stat-item" style="grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,0.1); padding-top:20px; margin-top:20px;">
+                        <span>利益改善インパクト</span>
+                        <b style="color:white; font-size:2.2rem;">売上1億円相当</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. 税制・補助金 -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="navy-container">
+                <span class="label-point">! 補助金・節税</span>
+                <h2 style="margin-bottom:20px;">実質投資額を下げる、公的支援の活用。</h2>
+                <p>即時償却や税額控除、各種補助金の活用で、シミュレーション以上の早期回収が可能です。最新の採択トレンドに合わせた申請サポートも行います。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. ステップ -->
+    <section class="section-padding">
+        <div class="container center">
+            <h2 style="margin-bottom:50px; color:var(--navy);">導入までのシンプルなステップ</h2>
+            <div style="display:flex; justify-content:space-between; flex-wrap:wrap; font-weight:bold;">
+                <div style="flex:1; min-width:150px;">1. お問い合わせ</div>
+                <div style="flex:1; min-width:150px;">➔ 2. 現地調査</div>
+                <div style="flex:1; min-width:150px;">➔ 3. 投資提案</div>
+                <div style="flex:1; min-width:150px;">➔ 4. ご契約</div>
+                <div style="flex:1; min-width:150px;">➔ 5. 施工・運用</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. FAQ -->
+    <section class="section-padding" style="background:var(--light-gray);">
+        <div class="container" style="max-width:800px;">
+            <h2 class="center" style="margin-bottom:40px;">よくあるご質問</h2>
+            <div style="margin-bottom:20px; border-bottom:1px solid #ddd; padding-bottom:15px;">
+                <b>Q. どの程度の規模から相談可能ですか？</b><br>
+                A. 削減の余地があれば、店舗から工場まで規模を問わずご提案可能です。
+            </div>
+            <div style="margin-bottom:20px;">
+                <b>Q. 予算が未定ですが相談できますか？</b><br>
+                A. はい。現状のコストを分析し、最適な投資額を算出することから始めさせていただきます。
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. フォーム -->
+    <section id="contact" class="section-padding">
+        <div class="container">
+            <div class="form-area">
+                <h2 class="center" style="color:var(--navy); margin-bottom:10px;">「投資としての妥当性」を無料診断</h2>
+                <p class="center" style="margin-bottom:40px;">まずは御社の電気代がどれだけ利益に変わるか、算定いたします。</p>
+                <form>
+                    <input type="text" placeholder="貴社名">
+                    <input type="text" placeholder="お名前">
+                    <input type="email" placeholder="メールアドレス">
+                    <input type="tel" placeholder="電話番号">
+                    <select>
+                        <option>ご検討内容を選択</option>
+                        <option>低圧系統用蓄電池</option>
+                        <option>産業用太陽光</option>
+                        <option>省エネ設備更新</option>
+                        <option>電気通信インフラ</option>
+                    </select>
+                    <textarea rows="4" placeholder="ご相談内容や現状の課題をご記入ください"></textarea>
+                    <div class="center">
+                        <button type="button" class="btn-cta" style="width:100%;">お問い合わせをする</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer style="background:var(--light-gray); padding:50px 0; border-top:1px solid #ddd; text-align:center;">
+        <div class="container">
+            <p style="font-weight:900; color:var(--navy);">株式会社エスココーポレーション</p>
+            <p style="font-size:0.8rem; color:#666; margin-top:10px;">〒700-0975 岡山県岡山市北区今4丁目15-33</p>
+            <p style="margin-top:20px;"><a href="https://esco-corp.co.jp/" style="color:var(--navy); text-decoration:none;">コーポレートサイト ＞</a></p>
+        </div>
+    </footer>
+
 </body>
 </html>
